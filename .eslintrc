@@ -1,0 +1,43 @@
+{
+    "root": true,
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true,
+        "jasmine": true,
+        "jest": true
+    },
+    "extends": [
+        "eslint:recommended",
+    ],
+    "plugins": [
+    ],
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "rules": {
+        "indent": [
+            "error",
+            4
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "linebreak-style": "off",
+        "arrow-parens": [
+            "error",
+            "always"
+        ],
+        "arrow-body-style": [
+            "error",
+            "as-needed"
+        ],
+        "strict": 0,
+        "no-console": 0,
+    }
+}

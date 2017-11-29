@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": ""
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,8 @@
   "homepage": "https://github.com/chunfantasy/sudoku#readme",
   "devDependencies": {
     "eslint": "^4.7.2",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-config-airbnb": "^0.0.7"
-  }
+    "eslint-config-airbnb": "^0.0.7",
+    "eslint-plugin-import": "^2.7.0"
+  },
+  "dependencies": {}
 }

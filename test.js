@@ -1,5 +1,5 @@
 const Sudoku = require('./src/sudoku');
 
-module.exports = {
-    Sudoku
-};
+const a = new Sudoku();
+
+a.solve();

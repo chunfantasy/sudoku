@@ -1,4 +1,4 @@
-const Sudoku = require('./src/sudoku');
+const Sudoku = require('.');
 
 const a = new Sudoku();
 

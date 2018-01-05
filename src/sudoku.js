@@ -1,20 +1,23 @@
  const Record = require('immutable').Record;
  const Set = require('immutable').Set;
  const List = require('immutable').List;
+ const Fs = require('fs');
 
 class Sudoku {
     constructor() {
         this.N = 9;
-        this.input = [
-            [0, 7, 4, 0, 1, 6, 0, 9, 0],
-            [0, 5, 3, 2, 0, 9, 7, 0, 0],
-            [0, 0, 9, 0, 7, 0, 4, 2, 8],
-            [3, 0, 0, 6, 0, 1, 0, 8, 2],
-            [9, 0, 0, 3, 5, 0, 1, 7, 0],
-            [5, 8, 1, 0, 0, 4, 0, 3, 0],
-            [1, 0, 0, 4, 3, 0, 2, 0, 9],
-            [7, 3, 2, 9, 0, 0, 8, 0, 0],
-            [0, 9, 0, 0, 8, 2, 0, 7, 3]];
+        this.input = [];
+        let inputString = Fs.readFileSync('example4.txt', 'utf8');
+        let tmp = [];
+        for (let i = 0; i < inputString.length; i++) {
+            if (inputString[i] === '\n'){
+                this.input.push(tmp);
+                tmp = [];
+                continue;
+            }
+            tmp.push(parseInt(inputString[i]));
+
+        }
     }
 
     solve() {
@@ -51,11 +54,10 @@ class Sudoku {
         newCsp = newCsp.set('unsolvedNodes', csp.get('unsolvedNodes').pop());
         newCsp = newCsp.set('solvedNodes', csp.get('solvedNodes').push(variable));
         const values = this.sortValues(variable, assignment, newCsp);
-        console.log('aaa', values);
         if(!values || values.size === 0) {
             return undefined;
         }
-        for(let i = 0; i < values.size; i =+ 1) {
+        for(let i = 0; i < values.size; i += 1) {
             const row = variable.get('row');
             const col = variable.get('col');
             const value = values.toArray()[i];
@@ -63,18 +65,14 @@ class Sudoku {
             
             solution[row][col] = value;
             assignment = assignment.set('solution', solution);
-            console.log(row, col);
-            console.log(solution);
 
             let result = this.backtrack(assignment, newCsp);
-            console.log(result);
             if(result && this.isComplete(result)) {
                 return result;
             }
 
             // csp = csp.set('solvedNodes', csp.get('solvedNodes').pop());
             // csp = csp.set('unsolvedNodes', csp.get('unsolvedNodes').push(variable));
-            console.log(csp.get('unsolvedNodes').size);
             solution[row][col] = 0;
             assignment = assignment.set('solution', solution);
         }

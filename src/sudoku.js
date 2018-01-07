@@ -1,23 +1,32 @@
  const Record = require('immutable').Record;
  const Set = require('immutable').Set;
  const List = require('immutable').List;
- const Fs = require('fs');
+const Fs = require('fs');
 
 class Sudoku {
     constructor() {
-        this.N = 9;
-        this.input = [];
-        let inputString = Fs.readFileSync('example4.txt', 'utf8');
-        let tmp = [];
-        for (let i = 0; i < inputString.length; i++) {
-            if (inputString[i] === '\n'){
-                this.input.push(tmp);
-                tmp = [];
-                continue;
-            }
-            tmp.push(parseInt(inputString[i]));
+    }
 
-        }
+    readArray(input) {
+        this.input = input;
+        this.N = this.input.length;
+        this.n = Math.sqrt(this.N);
+        console.log(this.input, this.N, this.n);
+    }
+
+    readFile(file) {
+        let input = [];
+        let inputString = Fs.readFileSync(file, 'utf8');
+        inputString.split('\n').forEach(line => {
+            if (line) {
+                let tmp = [];
+                for (let i = 0; i < line.length; i++) {
+                    tmp.push(parseInt(line[i], 16));
+                }
+                input.push(tmp);
+            }
+        });
+        this.readArray(input);
     }
 
     solve() {
@@ -31,18 +40,22 @@ class Sudoku {
                     node = node.set('domain', new Set([colNode]));
                     csp = csp.set('solvedNodes', csp.get('solvedNodes').push(node));
                 } else {
-                    node = node.set('domain', new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+                    let domain = new Set();
+                    for (let i = 0; i < this.N; i++) {
+                        domain = domain.add(i + 1);
+                    }
+                    node = node.set('domain', domain);
                     csp = csp.set('unsolvedNodes', csp.unsolvedNodes.push(node));
                 }
             });
         });
-        console.log(this.backtrackingSearch(csp));
+        return this.backtrackingSearch(csp);
     }
 
     backtrackingSearch(csp) {
         let assignment = new Assignment();
         assignment = assignment.set('solution', this.input);
-        return this.backtrack(assignment, csp);
+        return this.backtrack(assignment, csp).solution;
     }
 
     backtrack(assignment, csp) {
@@ -71,8 +84,6 @@ class Sudoku {
                 return result;
             }
 
-            // csp = csp.set('solvedNodes', csp.get('solvedNodes').pop());
-            // csp = csp.set('unsolvedNodes', csp.get('unsolvedNodes').push(variable));
             solution[row][col] = 0;
             assignment = assignment.set('solution', solution);
         }
@@ -87,17 +98,13 @@ class Sudoku {
         const solution = assignment.get('solution');
         const row = variable.get('row');
         const col = variable.get('col');
-        // for(let i = 0; i < 9; i += 1) {
-        //     for(let i = 0; i < 9; i += 1) {
-
-        //     }
-        // }
+        const n = this.n;
         csp.get('solvedNodes').forEach(node => {
             const i = node.get('row');
             const j = node.get('col');
             if(row === i || col === j || 
-                (Math.floor(row / 3) === Math.floor(i / 3) && 
-                Math.floor(col / 3) === Math.floor(j / 3))) {
+                (Math.floor(row / n) === Math.floor(i / n) && 
+                Math.floor(col / n) === Math.floor(j / n))) {
                 const domain = variable.get('domain');
                 const value = solution[i][j];
                 if(domain.has(value)) {

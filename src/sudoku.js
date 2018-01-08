@@ -1,6 +1,6 @@
- const Record = require('immutable').Record;
- const Set = require('immutable').Set;
- const List = require('immutable').List;
+const Record = require('immutable').Record;
+const Set = require('immutable').Set;
+const List = require('immutable').List;
 const Fs = require('fs');
 
 class Sudoku {
@@ -11,17 +11,16 @@ class Sudoku {
         this.input = input;
         this.N = this.input.length;
         this.n = Math.sqrt(this.N);
-        console.log(this.input, this.N, this.n);
     }
 
     readFile(file) {
         let input = [];
         let inputString = Fs.readFileSync(file, 'utf8');
-        inputString.split('\n').forEach(line => {
+        inputString.split('\n').forEach((line) => {
             if (line) {
                 let tmp = [];
                 for (let i = 0; i < line.length; i++) {
-                    tmp.push(parseInt(line[i], 16));
+                    !isNaN(parseInt(line[i], 16)) && tmp.push(parseInt(line[i], 16));
                 }
                 input.push(tmp);
             }
@@ -99,7 +98,7 @@ class Sudoku {
         const row = variable.get('row');
         const col = variable.get('col');
         const n = this.n;
-        csp.get('solvedNodes').forEach(node => {
+        csp.get('solvedNodes').forEach((node) => {
             const i = node.get('row');
             const j = node.get('col');
             if(row === i || col === j || 
@@ -117,8 +116,8 @@ class Sudoku {
 
     isComplete(assignment) {
         let isComplete = true;
-        assignment.solution.forEach(elements => {
-            elements.forEach(element => {
+        assignment.solution.forEach((elements) => {
+            elements.forEach((element) => {
                 if(!element) {
                     isComplete = false;
                     return;

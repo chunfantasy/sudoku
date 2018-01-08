@@ -1,5 +1,5 @@
-const Sudoku = require('./src/sudoku');
+const Sudoku = require('.');
 
 const a = new Sudoku();
-
-a.solve();
+a.readFile('example2.txt');
+console.log(a.solve());

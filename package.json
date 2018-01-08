@@ -25,5 +25,7 @@
     "eslint-config-airbnb": "^0.0.7",
     "eslint-plugin-import": "^2.7.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "immutable": "^3.8.2"
+  }
 }
